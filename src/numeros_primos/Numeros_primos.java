@@ -5,14 +5,13 @@
  */
 package numeros_primos;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 /**
@@ -29,6 +28,7 @@ public class Numeros_primos {
         ArrayList<Integer> primos = new ArrayList<>();
         // PUNTO DOS 
         // Almacenamos los números primos que nos pida el usuario en un array. 
+        leerFichero();
         System.out.println("¿Cuántos números primos necesitas?");
         int numero = sc.nextInt();
         int contador = 0;
@@ -70,49 +70,75 @@ public class Numeros_primos {
         return primo;
     }
 
-    public static void escribirFichero(ArrayList primos) {
+    public static void escribirFichero(ArrayList<Integer> primos) {
         // Creamos un objeto fichero
         //File fichero = new File("mascotas.info");
         File fichero = new File(RUTA);
-        ObjectOutputStream s = null;
-        FileOutputStream f = null;
+        FileWriter f = null;
+        BufferedWriter s = null;
         try {
-            f = new FileOutputStream(fichero); 
-            s = new ObjectOutputStream(f);
-            for(int i=0;i<primos.size();i++){
-                int numeros=primos.get(i);
-                s.writeObject(primos.get(i));
+            f = new FileWriter(fichero, true);
+            s = new BufferedWriter(f);
+            for (int i = 0; i < primos.size(); i++) {
+                s.write(Integer.toString(primos.get(i)));
             }
         } catch (IOException ex) {
             System.out.println("Mensaje de la excepción: " + ex.getMessage());
         } finally {
             // Cerramos el fichero se haya escrito la info o no. 
             try {
-                f.close();
                 s.close();
+                f.close();
+            } catch (IOException ex2) {
+                System.out.println("Mensaje de la excepción: " + ex2.getMessage());
+            }
+        }
+    }
+
+    public static void leerFichero() {
+        // Creamos un objeto fichero
+        // File fichero = new File("mascotas.info");
+        File fichero = new File(RUTA);
+        FileReader f = null;
+        BufferedReader s = null;
+        try {
+            f = new FileReader(fichero);
+            s = new BufferedReader(f);
+            String numero=s.readLine();
+            System.out.println(numero);
+        } catch (IOException ex) {
+            System.out.println("Mensaje de la excepción: " + ex.getMessage());
+        } finally {
+            // Cerramos el fichero se haya escrito la info o no. 
+            try {
+                s.close();
+                f.close();
             } catch (IOException ex2) {
                 System.out.println("Mensaje de la excepción: " + ex2.getMessage());
             }
         }
     }
     
-    public static void leerFichero(){
+    public static int leerPrimero() {
         // Creamos un objeto fichero
-        //File fichero = new File("mascotas.info");
+        // File fichero = new File("mascotas.info");
         File fichero = new File(RUTA);
-        ObjectInputStream s = null;
-        FileInputStream f = null;
+        FileReader f = null;
+        BufferedReader s = null;
         try {
-            f = new FileInputStream(fichero);
-            s = new ObjectInputStream(f);
-            s.read();
-            
-        } catch (IOException e) {
-            System.out.println("Mensaje de la excepción: " + e.getMessage());
+            f = new FileReader(fichero);
+            s = new BufferedReader(f);
+            String numero=s.readLine();
+            for(int i=){
+                
+            }
+        } catch (IOException ex) {
+            System.out.println("Mensaje de la excepción: " + ex.getMessage());
         } finally {
             // Cerramos el fichero se haya escrito la info o no. 
             try {
                 s.close();
+                f.close();
             } catch (IOException ex2) {
                 System.out.println("Mensaje de la excepción: " + ex2.getMessage());
             }
