@@ -8,11 +8,14 @@ package numeros_primos;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -71,8 +74,6 @@ public class Numeros_primos {
             }
         } while (!salir);
 
-        
-
         // Mostramos el contenido del array.
         // System.out.print("Tus números primos son: ");
         // for (int i = 0; i < primos.size(); i++) {
@@ -108,7 +109,7 @@ public class Numeros_primos {
         FileWriter f = null;
         BufferedWriter s = null;
         try {
-            f = new FileWriter(fichero,true);
+            f = new FileWriter(fichero, true);
             s = new BufferedWriter(f);
             int tamaño = primos.size();
             for (int i = 0; i < tamaño; i++) {
@@ -128,18 +129,25 @@ public class Numeros_primos {
         }
     }
 
-    public static void leerFichero() {
+    public static void leerFichero()  {
         // Creamos un objeto fichero
         // File fichero = new File("mascotas.info");
         File fichero = new File(RUTA);
         FileReader f = null;
         BufferedReader s = null;
-        String numero = "";
+        String numero="";
         try {
             f = new FileReader(fichero);
             s = new BufferedReader(f);
-            numero = s.readLine();
+            numero=s.readLine();
             System.out.println(numero);
+        } catch (FileNotFoundException ex) {
+            try {
+                fichero.createNewFile();
+                System.out.println("Mensaje de la excepción: " + ex.getMessage());
+            } catch (IOException ex1) {
+                System.out.println("Mensaje de la excepción: " + ex1.getMessage());
+            }
         } catch (IOException ex) {
             System.out.println("Mensaje de la excepción: " + ex.getMessage());
         } finally {
@@ -152,7 +160,7 @@ public class Numeros_primos {
             }
         }
     }
-    
+
     public static void vaciarFichero() {
         // Creamos un objeto fichero
         //File fichero = new File("mascotas.info");
@@ -163,6 +171,8 @@ public class Numeros_primos {
             f = new FileWriter(fichero);
             s = new BufferedWriter(f);
             s.write("");
+        } catch (FileNotFoundException ex) {
+            System.out.println("Mensaje de la excepción: " + ex.getMessage());
         } catch (IOException ex) {
             System.out.println("Mensaje de la excepción: " + ex.getMessage());
         } finally {
