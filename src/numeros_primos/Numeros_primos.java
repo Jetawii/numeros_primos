@@ -30,27 +30,54 @@ public class Numeros_primos {
         // Almacenamos los números primos que nos pida el usuario en un array. 
         System.out.println("Números primos almacenados en el fichero: ");
         leerFichero();
-        System.out.println("¿Cuántos números primos más quieres añadir?");
-        System.out.println("¿Quieres eliminar el contenido del fichero?");
-        int numero = sc.nextInt();
-        int contador = 0;
-        boolean completado = false;
-        for (int i = leerPrimero()+1; i >= 0 && !completado; i++) {
-            if (numeroPrimo(i)) {
-                primos.add(i);
-                contador = contador + 1;
+        boolean salir = false;
+        do {
+            System.out.println("1. Añadir primos.");
+            System.out.println("2. Vaciar contenido fichero.");
+            System.out.println("3. Mostrar contenido fichero.");
+            System.out.println("");
+            System.out.println("4. Salir.");
+            System.out.print("Elige una opción: ");
+            String opcion = sc.next();
+            switch (opcion) {
+                case "1":
+                    System.out.println("¿Cuántos números primos más quieres añadir?");
+                    int numero = sc.nextInt();
+                    int contador = 0;
+                    boolean completado = false;
+                    for (int i = primos.size(); i >= 0 && !completado; i++) {
+                        if (numeroPrimo(i)) {
+                            primos.add(i);
+                            contador = contador + 1;
+                        }
+                        if (primos.size() == numero) {
+                            completado = true;
+                        }
+                    }
+                    escribirFichero(primos);
+                    break;
+                case "2":
+                    vaciarFichero();
+                    break;
+                case "3":
+                    leerFichero();
+                    break;
+                case "4":
+                    salir = true;
+                    System.out.println("Nos vemos pronto :)");
+                    break;
+                default:
+                    System.out.println("Solo números del 1 al 7.");
             }
-            if (primos.size() == numero) {
-                completado = true;
-            }
-        }
-        escribirFichero(primos);
+        } while (!salir);
+
+        
+
         // Mostramos el contenido del array.
         // System.out.print("Tus números primos son: ");
         // for (int i = 0; i < primos.size(); i++) {
         //      System.out.println(primos.get(i));
         // }
-
         // Escribimos el array en el fichero.
     }
 
@@ -85,34 +112,7 @@ public class Numeros_primos {
             s = new BufferedWriter(f);
             int tamaño = primos.size();
             for (int i = 0; i < tamaño; i++) {
-                s.write(Integer.toString(primos.get(i))+" ");
-            }
-
-        } catch (IOException ex) {
-            System.out.println("Mensaje de la excepción: " + ex.getMessage());
-        } finally {
-            // Cerramos el fichero se haya escrito la info o no. 
-            try {
-                s.close();
-                f.close();
-            } catch (IOException ex2) {
-                System.out.println("Mensaje de la excepción: " + ex2.getMessage());
-            }
-        }
-    }
-    
-    public static void eliminarFichero(ArrayList<Integer> primos) {
-        // Creamos un objeto fichero
-        //File fichero = new File("mascotas.info");
-        File fichero = new File(RUTA);
-        FileWriter f = null;
-        BufferedWriter s = null;
-        try {
-            f = new FileWriter(fichero,true);
-            s = new BufferedWriter(f);
-            int tamaño = primos.size();
-            for (int i = 0; i < tamaño; i++) {
-                s.write(Integer.toString(primos.get(i))+" ");
+                s.write(primos.get(i) + " ");
             }
 
         } catch (IOException ex) {
@@ -152,25 +152,17 @@ public class Numeros_primos {
             }
         }
     }
-
-    public static int leerPrimero() {
+    
+    public static void vaciarFichero() {
         // Creamos un objeto fichero
-        // File fichero = new File("mascotas.info");
+        //File fichero = new File("mascotas.info");
         File fichero = new File(RUTA);
-        FileReader f = null;
-        BufferedReader s = null;
-        String numero = "";
-        int primo=0;
+        FileWriter f = null;
+        BufferedWriter s = null;
         try {
-            f = new FileReader(fichero);
-            s = new BufferedReader(f);
-            numero = s.readLine();
-            String numeroultimo=numero.substring(numero.length()-3, numero.length()-1);
-            if(numeroultimo.contains(" ")){
-                numeroultimo=numeroultimo.replace(" ", "");
-            }
-            primo=Integer.parseInt(numeroultimo);
-            System.out.println(primo);
+            f = new FileWriter(fichero);
+            s = new BufferedWriter(f);
+            s.write("");
         } catch (IOException ex) {
             System.out.println("Mensaje de la excepción: " + ex.getMessage());
         } finally {
@@ -182,7 +174,6 @@ public class Numeros_primos {
                 System.out.println("Mensaje de la excepción: " + ex2.getMessage());
             }
         }
-        return primo;
     }
 
 }
